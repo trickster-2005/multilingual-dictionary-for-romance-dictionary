@@ -1,4 +1,59 @@
-# 羅曼多語言字典
+# Romance Multilingual Dictionary ｜ 羅曼多語言字典
+
+**Live site / 網站：<https://trickster-2005.github.io/multilingual-dictionary-for-romance-dictionary/>**
+
+[English](#english) ｜ [繁體中文](#繁體中文)
+
+## English
+
+Type one word and see, on a single page:
+
+1. **A full English entry**: Traditional Chinese glosses, British and American IPA with 🔊 audio, senses grouped by part of speech (with Chinese glosses, examples and usage labels), inflections, synonyms, antonyms and common phrases.
+2. **Four Romance languages side by side**: Français ｜ Italiano ｜ Español ｜ Português, aligned row by row with the English senses. Each word shows grammatical gender (text label and colour), definite article, plural, part of speech, IPA, 🔊 audio and a link to its Wiktionary entry.
+3. **Etymology and cognates**: an ancestor chain for every word (`night ← Middle English nighte ← … ← Proto-Indo-European *nókʷts`), a “Cognates” badge, a cognate family tree, a short summary and the original etymology text.
+
+You can search in English, French, Italian, Spanish, Portuguese or Chinese. Case and accents are ignored (`cafe` finds `café`), and inflected forms are recognised (`went` → go, `notti` → notte, `yeux` → œil).
+
+The interface defaults to English with a dark theme, and the English entry starts collapsed (the headword and Chinese gloss stay visible). Users can switch to Traditional Chinese or a light theme; their choices are remembered in the browser.
+
+**How lookups work**
+
+1. **Offline dataset** (`data/`): about 9,100 common English headwords prebuilt from Kaikki.org / Wiktextract, with reverse indexes and inflected forms. Results appear almost instantly.
+2. **Live Wiktionary lookup** (`wiktionary.js`): any word that is not in the dataset is fetched from the English Wiktionary API in the browser (about 2–4 s) and shown in the same layout, marked as fetched live.
+
+**No backend.** It is a static site (HTML, CSS and vanilla JavaScript, no build step). The Python script in `tools/` is only run offline to regenerate `data/`.
+
+**Run locally**
+
+```bash
+python -m http.server 8000
+```
+
+Then open <http://localhost:8000/>. Searches can be linked directly, e.g. `?q=summer` or `?q=夏天`.
+
+**Rebuild the dataset**: download the Kaikki.org JSONL dumps (English, French, Italian, Spanish, Portuguese and Latin) into `raw/`, then run
+
+```bash
+pip install wordfreq opencc
+python tools/build_dataset.py \
+  --en raw/kaikki.org-dictionary-English.jsonl.gz \
+  --fr raw/kaikki.org-dictionary-French.jsonl.gz \
+  --it raw/kaikki.org-dictionary-Italian.jsonl.gz \
+  --es raw/kaikki.org-dictionary-Spanish.jsonl.gz \
+  --pt raw/kaikki.org-dictionary-Portuguese.jsonl.gz \
+  --ancestors raw/kaikki.org-dictionary-Latin.jsonl.gz \
+  --top 10000 --out data
+```
+
+The first run takes about 15 minutes and caches the extracted records in `raw/build_cache.pkl.gz`, so later rebuilds take a few minutes. `raw/` is git-ignored and must not be committed.
+
+**Deploy**: push the repository (including `data/` and `.nojekyll`), then in **Settings → Pages** choose *Deploy from a branch*, branch `main`, folder `/ (root)`.
+
+**License**: dictionary content comes from English Wiktionary contributors under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), extracted with [Wiktextract](https://github.com/tatuylonen/wiktextract) / [Kaikki.org](https://kaikki.org/). The generated `data/` is released under the same license, and every entry links to its source page.
+
+---
+
+## 繁體中文
 
 輸入一個字，同一頁看到：
 
