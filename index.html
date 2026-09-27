@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>羅曼多語言字典</title>
+  <meta name="description" content="英語詞典與法語、義大利語、西班牙語、葡萄牙語對照，附詞源鏈與同源家族樹。English dictionary with French, Italian, Spanish and Portuguese equivalents and etymology.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a3412' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z'/%3E%3Cpath d='M4 21V5M8 7h7M8 11h7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Apply saved theme/UI language before first paint to avoid a flash.
+    (function () {
+      try {
+        var th = JSON.parse(localStorage.getItem('pentadict.theme') || 'null');
+        if (th === 'light' || th === 'dark') document.documentElement.setAttribute('data-theme', th);
+        var pt = JSON.parse(localStorage.getItem('pentadict.pt') || 'null');
+        document.documentElement.setAttribute('data-pt', pt === 'BR' ? 'BR' : 'PT');
+        var ui = JSON.parse(localStorage.getItem('pentadict.ui') || 'null');
+        if (ui === 'en') document.documentElement.setAttribute('lang', 'en');
+      } catch (e) { document.documentElement.setAttribute('data-pt', 'PT'); }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">跳至主要內容</a>
+
+  <header class="topbar">
+    <div class="topbar-inner container">
+      <a class="brand" href="./" id="brand" data-home>
+        <span class="brand-text" data-i18n="appName">羅曼多語言字典</span>
+      </a>
+
+      <form class="search" id="search-form" role="search" autocomplete="off" novalidate>
+        <label for="q" class="sr-only" data-i18n="searchLabel">搜尋單字</label>
+        <div class="search-field">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.6-3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="q" name="q" type="search" role="combobox" aria-autocomplete="list"
+                 aria-expanded="false" aria-controls="suggest" aria-haspopup="listbox"
+                 enterkeyhint="search" spellcheck="false" autocapitalize="off" autocorrect="off"
+                 placeholder="輸入任一語言的單字…">
+          <ul id="suggest" class="suggest" role="listbox" hidden></ul>
+        </div>
+        <button type="submit" class="btn btn-primary search-submit" id="search-submit">
+          <span data-i18n="searchBtn">查詢</span>
+        </button>
+      </form>
+
+      <div class="toolbar">
+        <button type="button" class="btn btn-ghost" id="ui-lang" lang="en">EN</button>
+        <button type="button" class="btn btn-ghost btn-icon" id="theme-toggle" aria-label="切換深色模式">
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="container" tabindex="-1">
+    <noscript><p class="card">本網站需要啟用 JavaScript。This site requires JavaScript.</p></noscript>
+  </main>
+
+  <div id="status" class="sr-only" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p data-i18n-html="attribution">
+        詞典內容取自 <a href="https://en.wiktionary.org/" target="_blank" rel="noopener">英文維基詞典 Wiktionary</a>，
+        依 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> 授權，
+        經 <a href="https://github.com/tatuylonen/wiktextract" target="_blank" rel="noopener">Wiktextract</a> /
+        <a href="https://kaikki.org/" target="_blank" rel="noopener">Kaikki.org</a> 擷取整理。各詞條皆附原始頁面連結。
+      </p>
+      <p class="footer-meta" id="footer-meta"></p>
+    </div>
+  </footer>
+
+  <script src="wiktionary.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

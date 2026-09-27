@@ -1,0 +1,6 @@
+raw/
+__pycache__/
+data_full/
+data_sample/
+build_full.log
+.claude/
