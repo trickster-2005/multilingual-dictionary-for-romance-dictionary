@@ -189,12 +189,13 @@
     set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
   };
   const state = {
-    ui: store.get('ui', 'zh') === 'en' ? 'en' : 'zh',
+    ui: store.get('ui', 'en') === 'zh' ? 'zh' : 'en',          // default: English interface
     pt: store.get('pt', 'PT') === 'BR' ? 'BR' : 'PT',
     tab: ROMANCE.includes(store.get('tab', 'fr')) ? store.get('tab', 'fr') : 'fr',
     meta: null, words: [], wordZh: new Map(), wordsReady: null, metaReady: null,
     view: { type: 'home' }, seq: 0,
-    collapsed: (() => { const c = store.get('collapsed', {}); return c && typeof c === 'object' ? c : {}; })(),
+    // default: the English entry starts collapsed (headword and Chinese gloss stay visible)
+    collapsed: (() => { const c = store.get('collapsed', { en: true }); return c && typeof c === 'object' ? c : { en: true }; })(),
   };
   const $ = sel => document.querySelector(sel);
   const main = $('#main');
@@ -1212,13 +1213,15 @@
   window.addEventListener('popstate', route);
 
   /* ---------------------------------------------- theme & UI language */
-  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-  const effectiveTheme = () => document.documentElement.dataset.theme || (mq && mq.matches ? 'dark' : 'light');
+  const effectiveTheme = () => document.documentElement.dataset.theme || 'dark';   // default: dark
   function updateThemeButton() {
     const btn = $('#theme-toggle');
-    const label = t(effectiveTheme() === 'dark' ? 'themeToLight' : 'themeToDark');
+    const dark = effectiveTheme() === 'dark';
+    const label = t(dark ? 'themeToLight' : 'themeToDark');
     btn.setAttribute('aria-label', label);
     btn.title = label;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = dark ? '#131210' : '#f6f3ec';
   }
   $('#theme-toggle').addEventListener('click', () => {
     const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
@@ -1226,7 +1229,6 @@
     store.set('theme', next);
     updateThemeButton();
   });
-  if (mq && mq.addEventListener) mq.addEventListener('change', updateThemeButton);
 
   function applyStaticText() {
     document.documentElement.lang = state.ui === 'zh' ? 'zh-Hant' : 'en';
